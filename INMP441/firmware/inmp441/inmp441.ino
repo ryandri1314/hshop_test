@@ -1,10 +1,9 @@
 #include <driver/i2s.h>
 
-#define I2S_WS  25   // LRCLK
-#define I2S_SD  22   // DOUT from INMP441
-#define I2S_SCK 26   // BCLK
-
-#define LED 17
+#define I2S_WS  25   // IO25
+#define I2S_SD  22   // SCL
+#define I2S_SCK 26   // IO26
+#define LED 17  // IO17
 
 void setup() {
   Serial.begin(115200);
@@ -41,8 +40,7 @@ void loop() {
 
   i2s_read(I2S_NUM_0, &sample, sizeof(sample), &bytes_read, portMAX_DELAY);
 
-  // Normalize 32-bit PCM to 16-bit-ish range for plotting
-  int16_t val = sample >> 14;  // shift to get visible waveform range
+  int16_t val = sample >> 14;
   Serial.print(val);
   Serial.print(",");
   Serial.print(5000);
@@ -52,5 +50,5 @@ void loop() {
   int output = abs(val) > 1500 ? 0 : 1;
   digitalWrite(LED, output);
 
-  delay(1);  // Optional: slow down printing for stability
+  delay(1);
 }
